@@ -125,7 +125,7 @@ high = HighFreq(mul=.05)
 
 mypat = MyPattern({high:[3, 30], snoise:[31]}, time=.25, beats=64)
 
-dark = DarkRoss(fadein=10, mul=.7)
+dark = DarkRoss(fadein=10, mul=.9)
 
 time = -1
 
