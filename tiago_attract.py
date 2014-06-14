@@ -17,7 +17,7 @@ import random
 
 TITLE = 'attract v1.0'
 ARTIST = 'Tiago Bortoletto Vaz'
-DURATION = 233
+DURATION = 216
 
 s = Server(audio='offline').boot()
 #s = Server(audio='jack').boot()
@@ -25,12 +25,12 @@ s = Server(audio='offline').boot()
 s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
 
 class DarkRoss():
-    def __init__(self, fadein=.3, p2=None, chaos1=.4038, chaos2=.0769, feedback=.2, mul=.8):
-        self.r1 = Rossler(pitch=[.000001*random.uniform(0.99, 1.01) for i in range(4)], chaos=chaos1, stereo=True, mul=.8, add=.2).stop()
+    def __init__(self, fadein=.3, p2=None, chaos1=.4038, chaos2=.0769, feedback=.2, mul=1):
+        self.r1 = Rossler(pitch=[.000001*random.uniform(0.99, 1.01) for i in range(4)], chaos=chaos1, stereo=True, mul=.9, add=.2).stop()
         self.r1.ctrl()
         self.r2 = Rossler(pitch=[.1*random.uniform(0.99, 1.01) for i in range(4)], chaos=chaos2, mul=self.r1 * .5).stop() # give p2 to pitch
         self.r2.ctrl()
-        self.amp = Fader(fadein=fadein, fadeout=30).stop()
+        self.amp = Fader(fadein=fadein, fadeout=15).stop()
         self.rev = STRev(self.r2, roomSize=2, revtime=.8)
         self.rev.ctrl()
         self.feedback = feedback
@@ -120,12 +120,12 @@ class MyPattern:
     def stop(self):
         self.p.stop()
 
-snoise = SmoothNoise(mul=.1)
+snoise = SmoothNoise(mul=.15)
 high = HighFreq(mul=.05)
 
-mypat = MyPattern({high:[3, 30], snoise:[31]}, time=.25, beats=64)
+mypat = MyPattern({high:[3, 30], snoise:[15, 31]}, time=.25, beats=64)
 
-dark = DarkRoss(fadein=10, mul=.9)
+dark = DarkRoss(fadein=10)
 
 time = -1
 
@@ -182,20 +182,20 @@ def score():
         dark.r2.chaos = Randi(0, .3, freq=.1)
 
     if time == 140:
-        dark.outsig.set("feedback", .4, port=10)
-        dark.r1.chaos = Randi(0, .6, freq=30)
+        dark.outsig.set("feedback", .5, port=10)
+        dark.r1.chaos = Randi(0, .7, freq=10)
         dark.r2.chaos = Randi(0, .3, freq=20)
 
     if time == 170:
         dark.r2.pitch = p4
         dark.r2.chaos = Randi(0, .5, freq=30)
         dark.r1.mul = .5 # needs to be float before using set() bellow
-        dark.r1.set("mul", 0, 30)
+        dark.r1.set("mul", 0, 10)
 
     if time == 200:
         dark.tail()
 
-    if time == 230:
+    if time == 215:
         mypat.stop()
 
 mainTime = Metro(time=1).play()
