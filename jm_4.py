@@ -5,7 +5,7 @@
 
 Created by jmdumas
 """
-from pyo64 import *
+from pyo import *
 from random import randrange
 from random import uniform
 from random import shuffle

@@ -5,7 +5,7 @@ SunRadio.py
 Created by jmdumas
 """
 #IMPORTS
-from pyo64 import *
+from pyo import *
 #CONSTANTS
 
 TITLE = 'SunRadio'

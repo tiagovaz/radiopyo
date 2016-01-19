@@ -6,7 +6,7 @@ Kraut.py
 Created by jmdumas
 """
 
-from pyo64 import *
+from pyo import *
 from random import shuffle
 
 TITLE = 'Kraut'

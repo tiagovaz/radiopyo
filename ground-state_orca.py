@@ -18,7 +18,7 @@ belangeo - 2014
 Original work by __ground_state__ from 12-2013
 
 """
-from pyo64 import *
+from pyo import *
 import math  # for `pow`
 
 ################### USER-DEFINED VARIABLES ###################
