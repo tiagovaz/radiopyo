@@ -12,9 +12,10 @@ ARTIST = 'Takmi Ikeda [i9ed]'
 
 from pyo import *
 from random import uniform
+import sys
 
 s = Server(audio='offline', duplex=0).boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 class BELL:
     def __init__(self):

@@ -9,13 +9,14 @@ from pyo import *
 from random import randrange
 from random import uniform
 from random import shuffle
+import sys
 
 TITLE = '4'
 ARTIST = 'jmdumas'
 DURATION = 253
 
 s = Server(audio='offline').boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 
 s.setStartOffset(0)

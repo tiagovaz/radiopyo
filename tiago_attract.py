@@ -14,6 +14,7 @@ the Free Software Foundation, either version 3 of the License, or
 
 from pyo import *
 import random
+import sys
 
 TITLE = 'attract v1.0'
 ARTIST = 'Tiago Bortoletto Vaz'
@@ -22,7 +23,7 @@ DURATION = 216
 s = Server(audio='offline').boot()
 #s = Server(audio='jack').boot()
 
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 class DarkRoss():
     def __init__(self, fadein=.3, p2=None, chaos1=.4038, chaos2=.0769, feedback=.2, mul=1):

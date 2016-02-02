@@ -19,7 +19,7 @@ Original work by __ground_state__ from 12-2013
 
 """
 from pyo import *
-import math  # for `pow`
+import math, sys  # for `pow`
 
 ################### USER-DEFINED VARIABLES ###################
 ### READY is used to manage the server behaviour depending ###
@@ -28,7 +28,7 @@ import math  # for `pow`
 ### infos shown by the radio player. DURATION set the      ###
 ### duration of the audio file generated for the streaming.###
 ##############################################################
-READY = False  # Set to True when ready for the radio
+READY = True  # Set to True when ready for the radio
 TITLE = "Orca"  # The title of the music
 ARTIST = "__ground_state__"  # Your artist name
 DURATION = 196.535  # The duration of the music in seconds
@@ -39,7 +39,7 @@ DATE = 2014  # Year of creation
 ####################### SERVER CREATION ######################
 if READY:
     s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename="radiopyo.ogg", fileformat=7)
+    s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
 else:
     s = Server(sr=48000, nchnls=2, buffersize=700, duplex=0, audio='pa').boot()
 

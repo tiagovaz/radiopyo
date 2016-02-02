@@ -5,7 +5,7 @@ Created by belangeo on 2011-04-13.
 """
 
 from pyo import *
-import random, time
+import random, time, sys
 from random import uniform as rnd
 
 class RunFm:
@@ -417,7 +417,7 @@ ARTIST = 'Olivier Bélanger'
 DURATION = 725
 
 s = Server(sr=ATTR[RES]['sr'], nchnls=2, buffersize=ATTR[RES]['bufsize'], duplex=0, audio=ATTR[RES]['audio']).boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 s.amp = .25
 

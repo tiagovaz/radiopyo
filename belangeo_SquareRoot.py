@@ -2,14 +2,14 @@
 # encoding: utf-8
 
 from pyo import *
-import random
+import random, sys
 
 ARTIST = 'Olivier Bélanger'
 TITLE = 'SquareRoot'
 DURATION = 150
 
 s = Server(audio='offline').boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 fade = Fader(fadein=2, fadeout=10, dur=DURATION, mul=.35).play()
 
