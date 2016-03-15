@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from pyo import *
-import random
+import random, sys
 
 ARTIST = 'Olivier Bélanger'
 TITLE = 'Transparence'
 DURATION = 170
 
 s = Server(sr=44100, nchnls=2, buffersize=1024, duplex=0, audio="offline").boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 fade = Fader(fadein=1, fadeout=20, dur=DURATION-5).play()
 

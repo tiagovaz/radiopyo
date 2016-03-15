@@ -17,6 +17,7 @@ belangeo - 2014
 
 """
 from pyo import *
+import sys
 
 ################### USER-DEFINED VARIABLES ###################
 ### READY is used to manage the server behaviour depending ###
@@ -36,7 +37,7 @@ DATE = 2014             # Year of creation
 ####################### SERVER CREATION ######################
 if READY:
     s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename="radiopyo.ogg", fileformat=7)
+    s.recordOptions(dur=DURATION, filename=ys.argv[1] fileformat=7)
 else:
     s = Server(duplex=0).boot()
 

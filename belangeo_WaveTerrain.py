@@ -4,14 +4,14 @@
 Created by belangeo on 2010-10-06.
 """
 from pyo import *
-import random, math
+import random, math, sys
 
 TITLE = 'Wave Terrain'
 ARTIST = 'Olivier Bélanger'
 DURATION = 360
 
 s = Server(sr=44100, nchnls=2, buffersize=512, duplex=0, audio="offline").boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 SIZE = 128
 FREQS = [50.007,49.996,99.995,100.0074,150.005,150.0013,200.004,200.007]

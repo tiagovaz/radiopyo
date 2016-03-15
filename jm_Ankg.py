@@ -7,6 +7,7 @@ Created by jmdumas
 
 #IMPORTS-----------------------------------------------------------------------------------------------------------------------------
 from pyo import *
+import sys
 
 #CLASSES
 #303
@@ -47,7 +48,7 @@ ARTIST = 'jmdumas'
 DURATION = 222
 
 s = Server(audio='offline').boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 
 s.setStartOffset(0)

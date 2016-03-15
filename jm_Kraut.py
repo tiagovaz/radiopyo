@@ -8,13 +8,14 @@ Created by jmdumas
 
 from pyo import *
 from random import shuffle
+import sys
 
 TITLE = 'Kraut'
 ARTIST = 'jmdumas'
 DURATION = 180
 
 s = Server(audio='offline').boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 s.setStartOffset(0)
 s.amp = 0.8

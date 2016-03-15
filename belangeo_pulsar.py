@@ -13,7 +13,7 @@ if __builtin__.pulsar_bit_depth == 64:
 else:
     from pyo import *
 
-import random
+import random, sys
 
 duration = 420
 
@@ -1384,7 +1384,7 @@ ARTIST = 'Olivier Bélanger'
 DURATION = 420
 
 s = Server(audio='offline', sr=44100, nchnls=2, buffersize=256, duplex=1).boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 s.amp = 1.4
 

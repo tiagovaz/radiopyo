@@ -6,6 +6,7 @@ Created by jmdumas
 """
 #IMPORTS
 from pyo import *
+import sys
 #CONSTANTS
 
 TITLE = 'SunRadio'
@@ -13,7 +14,7 @@ ARTIST = 'jmdumas'
 DURATION = 273
 
 s = Server(audio='offline').boot()
-s.recordOptions(dur=DURATION, filename='radiopyo.ogg')
+s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 emit = 2
 #SYNTHS DEFS
