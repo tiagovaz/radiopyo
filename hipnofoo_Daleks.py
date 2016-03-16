@@ -23,7 +23,7 @@ DATE = 2016             # Year of creation
 ####################### SERVER CREATION ######################
 if READY:
     s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename="radiopyo.ogg", fileformat=7)
+    s.recordOptions(dur=DURATION, filename="sys.argv[1]", fileformat=7)
 else:
     s = Server(duplex=0).boot()
 
