@@ -56,7 +56,7 @@ env = Linseg([(0,0),(.2,1),(.2,0)])  .play(delay=5)
 a = LFO(Randh([100,110],400,1), sharp=1, type=5, mul=env)
 dt = Randi(min=.001, max=.45, freq=[.21,.43], mul=1)
 d = Delay(a, delay=dt, feedback=0, mul=.5)
-r = (d[0]+d[1])/2
+r = Sig(d[0]+d[1], mul=0.5)
 f = Follower2(r, risetime=.2, falltime=.2, mul=.1)
 ret = Log(f)*r
 d.input = ret+a  # return output
