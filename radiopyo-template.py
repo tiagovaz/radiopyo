@@ -37,7 +37,7 @@ DATE = 2014             # Year of creation
 ####################### SERVER CREATION ######################
 if READY:
     s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename=sys.argv[1] fileformat=7)
+    s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
 else:
     s = Server(duplex=0).boot()
 
