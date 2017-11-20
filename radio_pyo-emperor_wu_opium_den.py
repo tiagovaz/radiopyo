@@ -22,7 +22,7 @@ import sys
 ##############################################################
 READY = True           # Set to True when ready for the radio
 TITLE = "Emporer Wu's Opium Den"    # The title of the music
-ARTIST = "Process Process"  # Your artist name
+ARTIST = "Filtercreed"  # Your artist name
 DURATION = 377          # The duration of the music in seconds
 ##################### These are optional #####################
 GENRE = "Electronic/Psybient" # Kind of your music, if there is any
