@@ -56,7 +56,7 @@ def select_song(path=None):
     song = get_random_song(path)
     # ices2 needs this
     print(song)
-    hist_stat = write_history(song)
+    hist_stat = write_queue_history(song)
     song_duration = sndinfo(song)[1]
     now = datetime.datetime.now()
     # tag for update at now + song duration
