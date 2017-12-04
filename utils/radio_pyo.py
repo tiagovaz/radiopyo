@@ -76,7 +76,7 @@ def select_song(path=None):
 def update_song(script_file, ogg_file_tmp):
     path = os.path.dirname(script_file)
     basename = os.path.basename(os.path.splitext(script_file)[0])
-    ogg_file = os.path.join(path, basename, '.ogg')
+    ogg_file = ''.join([path, '/', basename, '.ogg'])
     stamp_files = [i for i in glob.glob(
         os.path.splitext(script_file)[0] + '*.stamp')]
     # remove other eventual stamps for the same file
