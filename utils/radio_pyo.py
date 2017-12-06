@@ -55,15 +55,12 @@ def get_random_song(path):
     """
     while True:
         all_songs = [i for i in glob.glob(path + '*.ogg')]
-        print('len of all_songs is %i' % len(all_songs))
         song = random.choice(all_songs)
         last_n = read_queue_history()
         stamp_files = [
             i for i in glob.glob(os.path.splitext(song)[0] + '*.stamp')]
         locked_files = [
             i for i in glob.glob(os.path.splitext(song)[0] + '.lock')]
-        print(stamp_files, locked_files)
-        print(last_n)
         if ((len(all_songs) >= PLAYLIST_NO_REPEAT_LEN * 2
                 and song in last_n)
                 or stamp_files or locked_files):
