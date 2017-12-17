@@ -17,10 +17,10 @@ from pyo import sndinfo
 logging.basicConfig(filename='radiopyo.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-RADIOPYO_PATH = '/home/akj/Downloads/radiopyo/'
+RADIOPYO_PATH = '/xxxxxxxx/radiopyo/'
 PLAYLIST_NO_REPEAT_LEN = len(glob.glob(RADIOPYO_PATH + '*.py')) // 2
-QUEUE_HISTORY_FILE = RADIOPYO_PATH + 'queue_history'
-CURRENT_SONG_INFO_FILE = RADIOPYO_PATH + 'current_info.txt'
+QUEUE_HISTORY_FILE = 'queue_history'
+CURRENT_SONG_INFO_FILE = 'current_info.txt'
 
 
 def read_queue_history():
@@ -29,11 +29,13 @@ def read_queue_history():
     any tracks.
     """
     try:
-        with open(os.path.join(QUEUE_HISTORY_FILE)) as queue_hist:
+        with open(os.path.join(RADIOPYO_PATH, QUEUE_HISTORY_FILE)) \
+                as queue_hist:
             last_n = queue_hist.readlines()[-PLAYLIST_NO_REPEAT_LEN:]
     except IOError:
         open(os.path.join(RADIOPYO_PATH, QUEUE_HISTORY_FILE), 'w+').close()
-        with open(os.path.join(QUEUE_HISTORY_FILE)) as queue_hist:
+        with open(os.path.join(RADIOPYO_PATH, QUEUE_HISTORY_FILE)) \
+                as queue_hist:
             last_n = queue_hist.readlines()[-PLAYLIST_NO_REPEAT_LEN:]
     return [songitem.strip() for songitem in last_n]
 
@@ -46,7 +48,8 @@ def write_queue_history(songname):
     last_n = read_queue_history()
     last_n.append('{0}'.format(songname))
     last_n = last_n[-PLAYLIST_NO_REPEAT_LEN:]
-    with open(os.path.join(QUEUE_HISTORY_FILE), 'w') as queue_hist:
+    with open(os.path.join(RADIOPYO_PATH, QUEUE_HISTORY_FILE), 'w') \
+            as queue_hist:
         queue_hist.write('\n'.join(last_n))
     return None
 
@@ -118,7 +121,7 @@ def select_song(path=None):
     open(song_stamp, 'a').close()
     # write music info to a txt which will be available in the web player
     song_info = get_song_info(os.path.splitext(song)[0] + '.py')
-    f = open(CURRENT_SONG_INFO_FILE, 'w+')
+    f = open(os.path.join(RADIOPYO_PATH, CURRENT_SONG_INFO_FILE), 'w+')
     current_info = ('<h6>Now playing <em>{0}</em> by {1}</h6> ({2} sec)'
                     .format(song_info['TITLE'], song_info['ARTIST'],
                             song_info['DURATION']))
@@ -141,7 +144,7 @@ def update_song(script_file):
         basename, ogg_file_tmp)
     update_msg = ''.join(['\n', '#' * len(update_msg), '\n', 
                           update_msg, '\n',
-                          '#' * len(update_msg), '\n'])
+                          '#' * len(update_msg)])
     logger.debug(update_msg)
     # remove other eventual stamps for the same file
     for f in stamp_files:
