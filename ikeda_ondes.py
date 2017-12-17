@@ -11,7 +11,7 @@ TITLE = 'ondes'
 ARTIST = 'Takmi Ikeda [i9ed]'
 
 from pyo import *
-from random import uniform
+from random import uniform, random, randint
 import sys
 
 s = Server(audio='offline', duplex=0).boot()
@@ -22,7 +22,7 @@ class BELL:
         self.zz = 0
 
     def go(self):
-        self.rt = random.random()**2*20
+        self.rt = random()**2*20
         self.tr = Cloud(uniform(self.rt, self.rt*4), 4).play()
         self.du = uniform(.01, 1.0/(self.rt*4))
         self.ev = TrigExpseg(self.tr, [(0,1), (self.du,0)], 4)
@@ -32,7 +32,7 @@ class BELL:
         self.fd = Fader(8, 8)
         self.xx = self.oc * self.fd
         self.yy = Delay(self.xx, .01, uniform(0, .8))
-        self.zz = Selector([self.xx, self.yy], random.randint(0, 1))
+        self.zz = Selector([self.xx, self.yy], randint(0, 1))
         self.fd.play()
         self.zz.out()
 
