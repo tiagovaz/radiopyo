@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 """
 Template for a RadioPyo song (version 1.0).
 """

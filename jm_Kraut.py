@@ -45,7 +45,7 @@ selbass.setPresets([beat1,beat2,beat3,beat4])
 selbass.recall(0)
 selbassm = selbass.mix(1)
 bass_scale = [38, 38, 41, 41, 45, 45, 48, 48, 52, 52, 55, 55]
-random.shuffle(bass_scale)
+shuffle(bass_scale)
 shuffledbassscale = DataTable(size=len(bass_scale),init=[midiToHz(i) for i in bass_scale])
 basscount = Counter(selbassm,min=0,max=len(bass_scale))
 basspitch = TableIndex(shuffledbassscale, basscount)

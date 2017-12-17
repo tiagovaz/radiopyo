@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 """
 Template for a RadioPyo song (version 1.0).
 A RadioPyo song is a musical python script using the python-pyo 
@@ -20,7 +22,7 @@ import sys
 ### infos shown by the radio player. DURATION set the      ###
 ### duration of the audio file generated for the streaming.###
 ##############################################################
-READY = True           # Set to True when ready for the radio
+READY = True          # Set to True when ready for the radio
 TITLE = "Emporer Wu's Opium Den"    # The title of the music
 ARTIST = "Filtercreed"  # Your artist name
 DURATION = 377          # The duration of the music in seconds

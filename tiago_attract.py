@@ -16,7 +16,7 @@ from pyo import *
 import random
 import sys
 
-TITLE = 'attract v1.0'
+TITLE = 'attract v1'
 ARTIST = 'Tiago Bortoletto Vaz'
 DURATION = 216
 
@@ -26,7 +26,7 @@ s = Server(audio='offline').boot()
 s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
 class DarkRoss():
-    def __init__(self, fadein=.3, p2=None, chaos1=.4038, chaos2=.0769, feedback=.2, mul=1):
+    def __init__(self, fadein=.3, p2=None, chaos1=.4038, chaos2=.0769, feedback=.2, mul=1.2):
         self.r1 = Rossler(pitch=[.000001*random.uniform(0.99, 1.01) for i in range(4)], chaos=chaos1, stereo=True, mul=.9, add=.2).stop()
         self.r1.ctrl()
         self.r2 = Rossler(pitch=[.1*random.uniform(0.99, 1.01) for i in range(4)], chaos=chaos2, mul=self.r1 * .5).stop() # give p2 to pitch
