@@ -419,7 +419,7 @@ DURATION = 725
 s = Server(sr=ATTR[RES]['sr'], nchnls=2, buffersize=ATTR[RES]['bufsize'], duplex=0, audio=ATTR[RES]['audio']).boot()
 s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
-s.amp = .25
+s.amp = .13
 
 #s.setStartOffset(300)
 
