@@ -5,7 +5,7 @@ while true; do
   then
     echo "running..."
   else
-    ices2 /xxxxxx/ices-playlist.xml
+    sudo ices2 /home/tvaz/radiopyo/conf/ices-playlist.xml
   fi
 sleep 5
 done

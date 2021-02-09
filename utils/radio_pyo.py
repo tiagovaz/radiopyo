@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import os
 import string
@@ -17,7 +17,7 @@ from pyo import sndinfo
 logging.basicConfig(filename='radiopyo.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-RADIOPYO_PATH = '/xxxxxxxx/radiopyo/'
+RADIOPYO_PATH = '/home/tvaz/radiopyo/'
 PLAYLIST_NO_REPEAT_LEN = len(glob.glob(RADIOPYO_PATH + '*.py')) // 2
 QUEUE_HISTORY_FILE = 'queue_history'
 CURRENT_SONG_INFO_FILE = 'current_info.txt'
@@ -112,6 +112,7 @@ def select_song(path=None):
     # call out to the newer helper function:
     song = get_random_song(path)
     # ices2 needs this
+    print(song)
     logger.debug('Selected song: {0}'.format(song))
     song_duration = sndinfo(song)[1]
     now = datetime.datetime.now()
@@ -196,6 +197,7 @@ def update_all_songs(path=None):
     import string
     for name in glob.glob(path + '*.py'):
         if name.replace('.py', '.ogg') not in all_songs:
+            print(name)
             update_song(name)
 
 
