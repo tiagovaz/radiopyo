@@ -17,7 +17,7 @@ from pyo import sndinfo
 logging.basicConfig(filename='radiopyo.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-RADIOPYO_PATH = '/home/tvaz/radiopyo/'
+RADIOPYO_PATH = './radiopyo/songs_scripts/'
 PLAYLIST_NO_REPEAT_LEN = len(glob.glob(RADIOPYO_PATH + '*.py')) // 2
 QUEUE_HISTORY_FILE = 'queue_history'
 CURRENT_SONG_INFO_FILE = 'current_info.txt'
