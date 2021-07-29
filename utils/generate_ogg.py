@@ -18,7 +18,7 @@ def generate_songs(src: str, output: str, format: str, force: bool, generate_met
         outfile_path= f'{output}/{song_name}.{format}'
 
         new_metadata = get_song_info(script_file=script)
-        new_metadata['PATH'] = outfile_path.replace('./website/', '')
+        new_metadata['PATH'] = outfile_path #.replace('./website/', '')
         songs_metadata.append(new_metadata)
 
         if force or song_name not in generated_songs_names:
@@ -33,7 +33,7 @@ def generate_songs(src: str, output: str, format: str, force: bool, generate_met
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate files from song generating scripts')
     parser.add_argument('-s', '--src', default='./songs_scripts/', help='Source folder containing all scripts')
-    parser.add_argument('-o', '--output', default='./website/assets/songs/', help='Output folder to store all songs')
+    parser.add_argument('-o', '--output', default='./songs/', help='Output folder to store all songs')
     parser.add_argument('-f', '--format', default='ogg', help='Output format')
     parser.add_argument('--force', action='store_true', default=False, help='regenerate all songs')
     parser.add_argument('--nometadata', action='store_true', default=False, help='do not regenerate the metadata file')
