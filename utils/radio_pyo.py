@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import os
+import string
 import random
 import datetime
 import glob
