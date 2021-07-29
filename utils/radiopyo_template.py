@@ -34,25 +34,26 @@ DURATION = 300          # The duration of the music in seconds
 GENRE = "Electronic"    # Kind of your music, if there is any
 DATE = 2014             # Year of creation
 
-####################### SERVER CREATION ######################
-if READY:
-    s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
-else:
-    s = Server(duplex=0).boot()
+if __name__ == "__main__":
+    ####################### SERVER CREATION ######################
+    if READY:
+        s = Server(duplex=0, audio="offline").boot()
+        s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
+    else:
+        s = Server(duplex=0).boot()
 
 
-##################### PROCESSING SECTION #####################
-# global volume (should be used to control the overall sound)
-fade = Fader(fadein=0.001, fadeout=10, dur=DURATION).play()
+    ##################### PROCESSING SECTION #####################
+    # global volume (should be used to control the overall sound)
+    fade = Fader(fadein=0.001, fadeout=10, dur=DURATION).play()
 
 
-###
-### Insert your algorithms here...
-###
+    ###
+    ### Insert your algorithms here...
+    ###
 
 
-#################### START THE PROCESSING ###################
-s.start()
-if not READY:
-    s.gui(locals())
+    #################### START THE PROCESSING ###################
+    s.start()
+    if not READY:
+        s.gui(locals())

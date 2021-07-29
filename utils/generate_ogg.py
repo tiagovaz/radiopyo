@@ -2,17 +2,32 @@ import glob
 import argparse
 from typing import NoReturn
 import os
+from radio_pyo import get_song_info
+import json
 
 def generate_songs(src: str, output: str, format: str, force: bool) -> NoReturn:
 
     all_songs = glob.glob(src + '*.py')
-    generated_songs = glob.glob(output + f'*.{format}')
+    generated_songs = glob.glob(output + f'/*.{format}')
     generated_songs = [os.path.basename(song).split('.')[0] for song in generated_songs]
+
+    songs_metadata = []
 
     for script in all_songs:
         song_name = os.path.basename(script).split('.')[0]
-        if song_name != '__init__' and (force or song_name not in generated_songs):
-            os.system(f"python {script} {output}/{song_name}.{format}")
+        outfile_path= f'{output}/{song_name}.{format}'
+
+        new_metadata = get_song_info(script_file=script)
+        new_metadata['PATH'] = outfile_path.replace('./website', './')
+        songs_metadata.append(new_metadata)
+
+        if force or song_name not in generated_songs:
+            os.system(f"python {script} {outfile_path}")
+
+    var_content = f'var songsMetadata = {json.dumps(songs_metadata)};'
+    with open(f'{output}/songs_metadata.js', 'w', encoding='utf-8') as f:
+        f.write(var_content)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate files from song generating scripts')

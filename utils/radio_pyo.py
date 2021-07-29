@@ -14,6 +14,9 @@ import logging
 
 from pyo import sndinfo
 
+# import importlib.util
+from runpy import run_path
+
 logging.basicConfig(filename='radiopyo.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -74,18 +77,11 @@ def get_random_song(path=None):
 
 
 def get_song_info(script_file):
-    song_info_dict = {'TITLE': '',
-                      'ARTIST': '',
-                      'DURATION': ''}
-    # TODO: use python import for that
-    for l in open(script_file, 'r').readlines():
-        if l.split('=')[0].strip() == 'TITLE':
-            song_info_dict['TITLE'] = clean_string(nocomment(l.split('=')[1]))
-        if l.split('=')[0].strip() == 'ARTIST':
-            song_info_dict['ARTIST'] = clean_string(nocomment(l.split('=')[1]))
-        if l.split('=')[0].strip() == 'DURATION':
-            song_info_dict['DURATION'] = clean_string(os.path.splitext(
-                nocomment(l.split('=')[1]))[0])
+    settings = run_path(script_file)
+    song_info_dict = {'TITLE': settings['TITLE'],
+                      'ARTIST': settings['ARTIST'],
+                      'DURATION': settings['DURATION'],
+                      'PATH': script_file}
     return song_info_dict
 
 
