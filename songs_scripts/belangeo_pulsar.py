@@ -1383,112 +1383,114 @@ TITLE = 'Pulsar'
 ARTIST = 'Olivier Bélanger'
 DURATION = 420
 
-s = Server(audio='offline', sr=44100, nchnls=2, buffersize=256, duplex=1).boot()
-s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
-s.amp = 1.4
+if __name__ == "__main__":
+    s = Server(audio='offline', sr=44100, nchnls=2, buffersize=256, duplex=1).boot()
+    s.recordOptions(dur=DURATION, filename=sys.argv[1])
 
-### Global times ###
-IpulseSec = 20
-IpulseHz = 1. / IpulseSec
+    s.amp = 1.4
 
-### Master count ###
-master = Metro(IpulseSec).play()
-count = Counter(master, min=0, max=100)
+    ### Global times ###
+    IpulseSec = 20
+    IpulseHz = 1. / IpulseSec
 
-### Intro ###
-intro_crunch = Intro_crunch(IpulseHz)
-intro_buzz = Intro_buzz()
-intro_high_sines = Intro_high_sines()
-intro_low_sines = Intro_low_sines(count, IpulseSec)
+    ### Master count ###
+    master = Metro(IpulseSec).play()
+    count = Counter(master, min=0, max=100)
 
-### Beats ###
-rhythm_lfo_tables = Rhythm_lfo_tables()
-rhythm_tables = rhythm_lfo_tables.getTables()
-rhythm_pulses = Rhythm_pulses(rhythm_tables, choice=[50, 48, 53, 55], metro=rhythm_lfo_tables.getMetro())
-rhythm_pulses2 = Rhythm_pulses(rhythm_tables, amp=.6, choice=[58, 60, 62, 65], metro=rhythm_lfo_tables.getMetro())
-rhythm_pulses3 = Rhythm_pulses(rhythm_tables, amp=.4, choice=[65, 67, 69, 70], metro=rhythm_lfo_tables.getMetro())
-rhythm_pulses4 = Rhythm_pulses(rhythm_tables, amp=.25, choice=[69, 70, 72, 74, 75], metro=rhythm_lfo_tables.getMetro())
-rhythm_high_sines = Rhythm_high_sines()
-rhythm_verb = Rhythm_verb(rhythm_pulses.getOut()+rhythm_pulses2.getOut()+rhythm_pulses3.getOut()+rhythm_pulses4.getOut()+rhythm_high_sines.getOut())
-rhythm_bass = Rhythm_bass(freq=65.4, mul=.07)
+    ### Intro ###
+    intro_crunch = Intro_crunch(IpulseHz)
+    intro_buzz = Intro_buzz()
+    intro_high_sines = Intro_high_sines()
+    intro_low_sines = Intro_low_sines(count, IpulseSec)
 
-### Sequence ###
-def event_0(): 
-    intro_crunch.play()
-def event_1():
-    intro_low_sines.play()
-def event_2():
-    intro_buzz.play1()
-    intro_high_sines.play()
-def event_3(): pass
-def event_4():
-    intro_buzz.play2()
-def event_5(): 
-    intro_high_sines.tail()                   
-def event_6():
-    intro_buzz.play3()
-def event_7(): pass
-def event_8():
-    intro_high_sines.stop()
-def event_9():
-    intro_crunch.tail()
-def event_10():
-    intro_low_sines.stop()
-    intro_crunch.stop()
-    rhythm_lfo_tables.play()
-    rhythm_verb.play()
-    rhythm_pulses.play()
-    intro_buzz.tail()
-def event_11():
-    rhythm_pulses2.play()
-    rhythm_bass.play()
-def event_12():
-    rhythm_pulses3.play()
-    rhythm_high_sines.play()
-def event_13():
-    rhythm_pulses4.play()
-    intro_buzz.stop()
-def event_14():
-    rhythm_pulses.startPitchChanges()
-    rhythm_pulses2.startPitchChanges()
-    rhythm_pulses3.startPitchChanges()
-    rhythm_pulses4.startPitchChanges()
-def event_15(): pass
-def event_16(): pass
-def event_17(): pass
-def event_18():
-    rhythm_pulses.stopPitchChanges()
-    rhythm_pulses2.stopPitchChanges()
-    rhythm_pulses3.stopPitchChanges()
-    rhythm_pulses4.stopPitchChanges()
-    #rhythm_pulses.amp.value = 0
-    #rhythm_pulses2.amp.value = 0
-    #rhythm_pulses3.amp.value = 0
-    #rhythm_pulses4.amp.value = 0
-def event_19():
-    intro_crunch.play()
-    rhythm_pulses.tail()
-    rhythm_pulses2.tail()
-    rhythm_pulses3.tail()
-    rhythm_pulses4.tail()
-    rhythm_high_sines.tail()
-    rhythm_bass.tail()
-def event_20():
-    intro_crunch.tail()
-    rhythm_pulses.stop()
-    rhythm_pulses2.stop()
-    rhythm_pulses3.stop()
-    rhythm_pulses4.stop()
-def event_21():
-    intro_crunch.stop()
-    rhythm_high_sines.stop()
-    rhythm_bass.stop()
-    rhythm_verb.stop()
-    master.stop()
+    ### Beats ###
+    rhythm_lfo_tables = Rhythm_lfo_tables()
+    rhythm_tables = rhythm_lfo_tables.getTables()
+    rhythm_pulses = Rhythm_pulses(rhythm_tables, choice=[50, 48, 53, 55], metro=rhythm_lfo_tables.getMetro())
+    rhythm_pulses2 = Rhythm_pulses(rhythm_tables, amp=.6, choice=[58, 60, 62, 65], metro=rhythm_lfo_tables.getMetro())
+    rhythm_pulses3 = Rhythm_pulses(rhythm_tables, amp=.4, choice=[65, 67, 69, 70], metro=rhythm_lfo_tables.getMetro())
+    rhythm_pulses4 = Rhythm_pulses(rhythm_tables, amp=.25, choice=[69, 70, 72, 74, 75], metro=rhythm_lfo_tables.getMetro())
+    rhythm_high_sines = Rhythm_high_sines()
+    rhythm_verb = Rhythm_verb(rhythm_pulses.getOut()+rhythm_pulses2.getOut()+rhythm_pulses3.getOut()+rhythm_pulses4.getOut()+rhythm_high_sines.getOut())
+    rhythm_bass = Rhythm_bass(freq=65.4, mul=.07)
 
-pp = Print(count, 1)
-trig2 = Score(count)
+    ### Sequence ###
+    def event_0(): 
+        intro_crunch.play()
+    def event_1():
+        intro_low_sines.play()
+    def event_2():
+        intro_buzz.play1()
+        intro_high_sines.play()
+    def event_3(): pass
+    def event_4():
+        intro_buzz.play2()
+    def event_5(): 
+        intro_high_sines.tail()                   
+    def event_6():
+        intro_buzz.play3()
+    def event_7(): pass
+    def event_8():
+        intro_high_sines.stop()
+    def event_9():
+        intro_crunch.tail()
+    def event_10():
+        intro_low_sines.stop()
+        intro_crunch.stop()
+        rhythm_lfo_tables.play()
+        rhythm_verb.play()
+        rhythm_pulses.play()
+        intro_buzz.tail()
+    def event_11():
+        rhythm_pulses2.play()
+        rhythm_bass.play()
+    def event_12():
+        rhythm_pulses3.play()
+        rhythm_high_sines.play()
+    def event_13():
+        rhythm_pulses4.play()
+        intro_buzz.stop()
+    def event_14():
+        rhythm_pulses.startPitchChanges()
+        rhythm_pulses2.startPitchChanges()
+        rhythm_pulses3.startPitchChanges()
+        rhythm_pulses4.startPitchChanges()
+    def event_15(): pass
+    def event_16(): pass
+    def event_17(): pass
+    def event_18():
+        rhythm_pulses.stopPitchChanges()
+        rhythm_pulses2.stopPitchChanges()
+        rhythm_pulses3.stopPitchChanges()
+        rhythm_pulses4.stopPitchChanges()
+        #rhythm_pulses.amp.value = 0
+        #rhythm_pulses2.amp.value = 0
+        #rhythm_pulses3.amp.value = 0
+        #rhythm_pulses4.amp.value = 0
+    def event_19():
+        intro_crunch.play()
+        rhythm_pulses.tail()
+        rhythm_pulses2.tail()
+        rhythm_pulses3.tail()
+        rhythm_pulses4.tail()
+        rhythm_high_sines.tail()
+        rhythm_bass.tail()
+    def event_20():
+        intro_crunch.tail()
+        rhythm_pulses.stop()
+        rhythm_pulses2.stop()
+        rhythm_pulses3.stop()
+        rhythm_pulses4.stop()
+    def event_21():
+        intro_crunch.stop()
+        rhythm_high_sines.stop()
+        rhythm_bass.stop()
+        rhythm_verb.stop()
+        master.stop()
 
-s.start()
-#s.gui(locals())
+    pp = Print(count, 1)
+    trig2 = Score(count)
+
+    s.start()
+    #s.gui(locals())

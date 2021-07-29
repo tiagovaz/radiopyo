@@ -34,30 +34,31 @@ DURATION = 210          # The duration of the music in seconds
 GENRE = "Electronic"    # Kind of your music, if there is any
 DATE = 2015             # Year of creation
 
-####################### SERVER CREATION ######################
-if READY:
-    s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
-else:
-    s = Server(duplex=0).boot()
+if __name__ == "__main__":
+    ####################### SERVER CREATION ######################
+    if READY:
+        s = Server(duplex=0, audio="offline").boot()
+        s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
+    else:
+        s = Server(duplex=0).boot()
 
-##################### PROCESSING SECTION #####################
+    ##################### PROCESSING SECTION #####################
 
-######### Hexmod ############
+    ######### Hexmod ############
 
-h = Fader(fadein=0.01, fadeout=.1, dur=DURATION, mul=1, add=0)    .play()
+    h = Fader(fadein=0.01, fadeout=.1, dur=DURATION, mul=1, add=0)    .play()
 
-e = Phasor(freq=.3, phase=0, mul=200, add=0)
+    e = Phasor(freq=.3, phase=0, mul=200, add=0)
 
-x = SineLoop(80+e, feedback=.3, mul=.2) 
+    x = SineLoop(80+e, feedback=.3, mul=.2) 
 
-m = Randi(min=0.001, max=.9, freq=1, mul=1, add=0)
+    m = Randi(min=0.001, max=.9, freq=1, mul=1, add=0)
 
-o = Delay(x, delay=m, feedback=.9, mul=1) 
+    o = Delay(x, delay=m, feedback=.9, mul=1) 
 
-d = Pan(o, outs=2, pan=m, spread=.3, mul=.5*h, add=0)   .out()
+    d = Pan(o, outs=2, pan=m, spread=.3, mul=.5*h, add=0)   .out()
 
-#################### START THE PROCESSING ###################
-s.start()
-if not READY:
-    s.gui(locals())
+    #################### START THE PROCESSING ###################
+    s.start()
+    if not READY:
+        s.gui(locals())

@@ -31,52 +31,53 @@ TITLE = "Degradation"    # The title of the music
 ARTIST = "belangeo"  # Your artist name
 DURATION = 120          # The duration of the music in seconds
 
-####################### SERVER CREATION ######################
-if READY:
-    s = Server(duplex=0, audio="offline").boot()
-    s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
-else:
-    s = Server(duplex=0).boot()
+if __name__ == "__main__":
+    ####################### SERVER CREATION ######################
+    if READY:
+        s = Server(duplex=0, audio="offline").boot()
+        s.recordOptions(dur=DURATION, filename=sys.argv[1], fileformat=7)
+    else:
+        s = Server(duplex=0).boot()
 
 
-##################### PROCESSING SECTION #####################
-# global volume (should be used to control the overall sound)
-fade = Fader(fadein=0.001, fadeout=10, dur=DURATION).play()
+    ##################### PROCESSING SECTION #####################
+    # global volume (should be used to control the overall sound)
+    fade = Fader(fadein=0.001, fadeout=10, dur=DURATION).play()
 
-env = CosTable([(0,0),(40,1),(500,.2),(8191,0)])
-env2 = CosTable([(0,0),(20,1),(500,1),(2000,.3),(8191,0)])
+    env = CosTable([(0,0),(40,1),(500,.2),(8191,0)])
+    env2 = CosTable([(0,0),(20,1),(500,1),(2000,.3),(8191,0)])
 
-met = Metro(.1,8).play()
+    met = Metro(.1,8).play()
 
-car = TrigChoice(met.mix(), [50]*12+[75,99]*2+[151], init=50, mul=RandInt(3,.3125,2,4))
-ind = SampHold(Clip(Sine(.02, 0, 3, 2), min=0, max=4), met, 1)
-amp = TrigEnv(met, env, .25, mul=[1,.5,.5,.5,.7,.5,.5,.5])
-fm = FM(car, [.25,.33,.5,.75], ind, amp)
-srscl = SampHold(Sine(.05, 0, .06, .1), met.mix(), 1)
-deg = Degrade(fm, 32, srscl)
-filt = Biquad(deg.mix(2), freq=5000)
+    car = TrigChoice(met.mix(), [50]*12+[75,99]*2+[151], init=50, mul=RandInt(3,.3125,2,4))
+    ind = SampHold(Clip(Sine(.02, 0, 3, 2), min=0, max=4), met, 1)
+    amp = TrigEnv(met, env, .25, mul=[1,.5,.5,.5,.7,.5,.5,.5])
+    fm = FM(car, [.25,.33,.5,.75], ind, amp)
+    srscl = SampHold(Sine(.05, 0, .06, .1), met.mix(), 1)
+    deg = Degrade(fm, 32, srscl)
+    filt = Biquad(deg.mix(2), freq=5000)
 
-low = Biquad(filt, freq=200, mul=.3)
-b1 = Biquad(filt, freq=200, q=5, type=2)
-b2 = Biquad(filt, freq=500, q=5, type=2)
-b3 = Biquad(filt, freq=1000, q=5, type=2)
-b4 = Biquad(filt, freq=1700, q=8, type=2)
-b5 = Biquad(filt, freq=2500, q=8, type=2)
+    low = Biquad(filt, freq=200, mul=.3)
+    b1 = Biquad(filt, freq=200, q=5, type=2)
+    b2 = Biquad(filt, freq=500, q=5, type=2)
+    b3 = Biquad(filt, freq=1000, q=5, type=2)
+    b4 = Biquad(filt, freq=1700, q=8, type=2)
+    b5 = Biquad(filt, freq=2500, q=8, type=2)
 
-delb1 = SDelay(b1, delay=.8, maxdelay=1)
-delb3 = SDelay(b3, delay=1.6, maxdelay=2, mul=.5)
-delb4 = SDelay(b4, delay=3.2, maxdelay=4, mul=.75)
-delb5 = SDelay(b5, delay=6.4, maxdelay=7, mul=.75)
+    delb1 = SDelay(b1, delay=.8, maxdelay=1)
+    delb3 = SDelay(b3, delay=1.6, maxdelay=2, mul=.5)
+    delb4 = SDelay(b4, delay=3.2, maxdelay=4, mul=.75)
+    delb5 = SDelay(b5, delay=6.4, maxdelay=7, mul=.75)
 
-total = low+delb1+b2+delb3+delb4+delb5
+    total = low+delb1+b2+delb3+delb4+delb5
 
-rev = WGVerb(total, feedback=.75, bal=.15, mul=fade*1.3).out()
+    rev = WGVerb(total, feedback=.75, bal=.15, mul=fade*1.3).out()
 
-rumvol = TrigEnv(met[0]+met[4], env2, .39, mul=.4)
-rumble = Rossler(pitch=[.09,.09003], chaos=.25, mul=fade*rumvol).out()
-bass = Sine(freq=[40,40], mul=fade*rumvol*.25).out()
+    rumvol = TrigEnv(met[0]+met[4], env2, .39, mul=.4)
+    rumble = Rossler(pitch=[.09,.09003], chaos=.25, mul=fade*rumvol).out()
+    bass = Sine(freq=[40,40], mul=fade*rumvol*.25).out()
 
-#################### START THE PROCESSING ###################
-s.start()
-if not READY:
-    s.gui(locals())
+    #################### START THE PROCESSING ###################
+    s.start()
+    if not READY:
+        s.gui(locals())
