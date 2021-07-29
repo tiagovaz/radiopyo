@@ -1,9 +1,12 @@
-import glob
-import argparse
-from typing import NoReturn
 import os
-from radio_pyo import get_song_info
+import glob
 import json
+import argparse
+
+from typing import NoReturn
+
+from radio_pyo import get_song_info
+
 
 def generate_songs(src: str, output: str, format: str, force: bool, generate_metadata: bool) -> NoReturn:
 
@@ -18,7 +21,7 @@ def generate_songs(src: str, output: str, format: str, force: bool, generate_met
         outfile_path= f'{output}/{song_name}.{format}'
 
         new_metadata = get_song_info(script_file=script)
-        new_metadata['PATH'] = outfile_path #.replace('./website/', '')
+        new_metadata['PATH'] = outfile_path
         songs_metadata.append(new_metadata)
 
         if force or song_name not in generated_songs_names:
