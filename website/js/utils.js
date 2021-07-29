@@ -22,9 +22,10 @@ const onPlayBtnClick = function() {
  * Callback to handle end of audio file
  */
  const onSongEnd = function() {
-    isPlaying = false;
     chooseNextSong();
-    playAudio();
+    if(isPlaying) {
+        playAudio();
+    }
 }
 
 

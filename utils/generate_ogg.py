@@ -5,11 +5,11 @@ import os
 from radio_pyo import get_song_info
 import json
 
-def generate_songs(src: str, output: str, format: str, force: bool) -> NoReturn:
+def generate_songs(src: str, output: str, format: str, force: bool, generate_metadata: bool) -> NoReturn:
 
     all_songs = glob.glob(src + '*.py')
     generated_songs = glob.glob(output + f'/*.{format}')
-    generated_songs = [os.path.basename(song).split('.')[0] for song in generated_songs]
+    generated_songs_names = [os.path.basename(song).split('.')[0] for song in generated_songs]
 
     songs_metadata = []
 
@@ -21,12 +21,13 @@ def generate_songs(src: str, output: str, format: str, force: bool) -> NoReturn:
         new_metadata['PATH'] = outfile_path.replace('./website/', '')
         songs_metadata.append(new_metadata)
 
-        if force or song_name not in generated_songs:
+        if force or song_name not in generated_songs_names:
             os.system(f"python {script} {outfile_path}")
 
-    var_content = f'var songsMetadata = {json.dumps(songs_metadata)};'
-    with open(f'{output}/songs_metadata.js', 'w', encoding='utf-8') as f:
-        f.write(var_content)
+    if generate_metadata:
+        var_content = f'var songsMetadata = {json.dumps(songs_metadata)};'
+        with open(f'{output}/songs_metadata.js', 'w', encoding='utf-8') as f:
+            f.write(var_content)
 
 
 if __name__ == "__main__":
@@ -35,6 +36,7 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--output', default='./website/assets/songs/', help='Output folder to store all songs')
     parser.add_argument('-f', '--format', default='ogg', help='Output format')
     parser.add_argument('--force', action='store_true', default=False, help='regenerate all songs')
+    parser.add_argument('--nometadata', action='store_true', default=False, help='do not regenerate the metadata file')
 
     args = parser.parse_args()
-    generate_songs(args.src, args.output, args.format, args.force)
+    generate_songs(args.src, args.output, args.format, args.force, not args.nometadata)
