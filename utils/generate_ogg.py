@@ -18,7 +18,7 @@ def generate_songs(src: str, output: str, format: str, force: bool) -> NoReturn:
         outfile_path= f'{output}/{song_name}.{format}'
 
         new_metadata = get_song_info(script_file=script)
-        new_metadata['PATH'] = outfile_path.replace('./website', './')
+        new_metadata['PATH'] = outfile_path.replace('./website/', '')
         songs_metadata.append(new_metadata)
 
         if force or song_name not in generated_songs:

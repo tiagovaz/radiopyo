@@ -30,3 +30,23 @@ h3 {
 .information {
     padding-top: 30px;
 }
+
+.main-content {
+    background-color: #cac9c99f;
+    width: max(30%, 180px);
+    margin: auto;
+    padding-bottom: 10px;
+    border-radius: 20px;
+}
+
+.control-button {
+    background-color: transparent;
+    border: none;
+    font-size: xx-large;
+    position: fixed;
+
+}
+
+.control-button:hover {
+    color: #009be3;
+}
