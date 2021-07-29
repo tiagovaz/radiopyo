@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+# Workflow to generate new songs each time someone adds a new one to the repo :)
 
 name: Generate .ogg files
 
