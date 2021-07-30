@@ -3,8 +3,7 @@ var playBtn;
 var audio;
 var audioSource;
 var songQueue = [];
-
-var PLAYLIST_NO_REPEAT_LEN;
+var queuePos = 0;
 
 /**
  * Callback to handle play button click
@@ -22,33 +21,40 @@ const onPlayBtnClick = function() {
  * Callback to handle end of audio file
  */
  const onSongEnd = function() {
-    chooseNextSong();
+    queuePos += 1;
+    document.getElementById("prevButton").disabled = false;
+    loadSong(songQueue[queuePos % songsMetadata.length])
+
     if(isPlaying) {
         playAudio();
     }
 }
 
-
 /**
- * Choose an random element from an array
- * @param  {Object} array The array to choose from
- * @return {Object}       The chosen element from the array
+ * Callback to handle prev btn
  */
-const randomChoice = function(array) {
-    // source: https://stackoverflow.com/a/4550514
-    return array[Math.floor(Math.random() * array.length)];
+ const playPrevSong = function() {
+    queuePos = Math.max(0, (queuePos - 1));
+
+    if(queuePos === 0) {
+        document.getElementById("prevButton").disabled = true;
+    }
+
+    loadSong(songQueue[queuePos % songsMetadata.length])
+
+    if(isPlaying) {
+        playAudio();
+    }
 }
 
-
 /**
- * Removes element in array that are in an other array
- * @param {Object}  toKeep   Array from which to remove elements
- * @param {Object}  toRemove Array containing elements to remove
- * @return {Object}          The array containing all elements in toKeep that are not also in toRemove
+ * Shuffle an array pseudo-randomly
+ * @param {Object}   array   Array to shuffle
+ * @return {Object}          Shuffled array
  */
-const difference = function(toKeep, toRemove) {
-    // source: https://stackoverflow.com/a/33034768
-    return toKeep.filter(x => !toRemove.includes(x));
+const shuffleArray = function(array) {
+    // source: https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+    return array.sort((a, b) => 0.5 - Math.random());
 }
 
 
@@ -79,30 +85,7 @@ const pauseAudio = function() {
 const loadSong = function(song) {
     audioSource.src = song.PATH;
     audio.load();
-
-    songQueue.push(song);
-    songQueue = songQueue.slice(-PLAYLIST_NO_REPEAT_LEN);
     showSongMetadata(song);
-}
-
-
-/**
- * Get a random song from all available songs that was not played in the last N songs
- * @return {Object} A song metadata
- */
-const getRandomSong = function() {
-    possibleSongs = difference(songsMetadata, songQueue);
-    song = randomChoice(possibleSongs);
-    return song;
-}
-
-
-/**
- * Get a random song and load it in the audio player
- */
-const chooseNextSong = function() {
-    nextSong = getRandomSong();
-    loadSong(nextSong);
 }
 
 
@@ -121,9 +104,9 @@ const showSongMetadata = function(song) {
     titleText.textContent = song.TITLE;
 }
 
-window.onload = function () {
 
-    PLAYLIST_NO_REPEAT_LEN = Math.floor(songsMetadata.length / 2);
+window.onload = function () {
+    songQueue = shuffleArray(songsMetadata);
 
     playBtn = document.getElementById('playButton');
     playBtn.addEventListener('click', (_) => onPlayBtnClick());
@@ -131,9 +114,12 @@ window.onload = function () {
     nextButton = document.getElementById('nextButton');
     nextButton.addEventListener('click', (_) => onSongEnd());
 
+    prevButton = document.getElementById('prevButton');
+    prevButton.addEventListener('click', (_) => playPrevSong());
+
     audio = document.getElementById("audio");
     audioSource = document.getElementById("audioSource");
 
-    chooseNextSong();
+    loadSong(songQueue[0]);
     audio.onended = () => onSongEnd();
 }
