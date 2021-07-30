@@ -11,19 +11,23 @@ import tokenize
 import io
 import subprocess
 import logging
+from typing import Dict, List, NoReturn
+
+import argparse
 
 from pyo import sndinfo
+
+from runpy import run_path
 
 logging.basicConfig(filename='radiopyo.log', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-RADIOPYO_PATH = '/home/tvaz/radiopyo/'
+RADIOPYO_PATH = './songs_scripts/'
 PLAYLIST_NO_REPEAT_LEN = len(glob.glob(RADIOPYO_PATH + '*.py')) // 2
 QUEUE_HISTORY_FILE = 'queue_history'
 CURRENT_SONG_INFO_FILE = 'current_info.txt'
 
-
-def read_queue_history():
+def read_queue_history() -> List:
     """A helper function that reads a history queue file, to see what the
     radio has recently played. Keep things interesting by not over-playing
     any tracks.
@@ -40,7 +44,7 @@ def read_queue_history():
     return [songitem.strip() for songitem in last_n]
 
 
-def write_queue_history(songname):
+def write_queue_history(songname: str) -> NoReturn:
     """A helper function that reads a history queue file, to see what the
     radio has recently played. Keep things interesting by not over-playing
     any tracks.
@@ -54,7 +58,7 @@ def write_queue_history(songname):
     return None
 
 
-def get_random_song(path=None):
+def get_random_song(path: str = None) -> str:
     """The heart of the randomization algorithm. Will not pick a song if
     it has been heard within a certain number of previous songs, and
     will also not choose a song that is being currently rendered.
@@ -73,23 +77,16 @@ def get_random_song(path=None):
     return song
 
 
-def get_song_info(script_file):
-    song_info_dict = {'TITLE': '',
-                      'ARTIST': '',
-                      'DURATION': ''}
-    # TODO: use python import for that
-    for l in open(script_file, 'r').readlines():
-        if l.split('=')[0].strip() == 'TITLE':
-            song_info_dict['TITLE'] = clean_string(nocomment(l.split('=')[1]))
-        if l.split('=')[0].strip() == 'ARTIST':
-            song_info_dict['ARTIST'] = clean_string(nocomment(l.split('=')[1]))
-        if l.split('=')[0].strip() == 'DURATION':
-            song_info_dict['DURATION'] = clean_string(os.path.splitext(
-                nocomment(l.split('=')[1]))[0])
+def get_song_info(script_file: str) -> Dict:
+    settings = run_path(script_file)
+    song_info_dict = {'TITLE': settings['TITLE'],
+                      'ARTIST': settings['ARTIST'],
+                      'DURATION': settings['DURATION'],
+                      'PATH': script_file}
     return song_info_dict
 
 
-def nocomment(string):
+def nocomment(string: str) -> str:
     return string.split('#')[0]
     #result = []
     #g = tokenize.tokenize(io.BytesIO(string.encode('utf8')).readline)
@@ -99,7 +96,7 @@ def nocomment(string):
     #return tokenize.untokenize(result).decode('utf8')
 
 
-def clean_string(string):
+def clean_string(string: str) -> str:
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
     no_punct = ""
     for char in string:
@@ -108,7 +105,7 @@ def clean_string(string):
     return no_punct.strip()
 
 
-def select_song(path=None):
+def select_song(path:str = None) -> NoReturn:
     # call out to the newer helper function:
     song = get_random_song(path)
     # ices2 needs this
@@ -130,7 +127,7 @@ def select_song(path=None):
     f.close()
 
 
-def update_song(script_file):
+def update_song(script_file: str) -> NoReturn:
     """Here is where a song first gets rendered to ogg"""
     ogg_file_tmp = ''.join([random.choice(
         string.ascii_letters + string.digits) for n in range(10)]) + '.ogg'
@@ -180,7 +177,7 @@ def update_song(script_file):
         os.remove(lock_file)
 
 
-def update_songs(path=None):
+def update_songs(path:str = None) -> NoReturn:
     for name in glob.glob(path + '*.stamp'):
         now = datetime.datetime.now()
         scheduled_time = datetime.datetime.strptime(name.split(
@@ -192,7 +189,7 @@ def update_songs(path=None):
             break
 
 
-def update_all_songs(path=None):
+def update_all_songs(path:str = None) -> NoReturn:
     all_songs = [i for i in glob.glob(path + '*.ogg')]
     import string
     for name in glob.glob(path + '*.py'):
@@ -202,16 +199,23 @@ def update_all_songs(path=None):
 
 
 def main():
-    cmdargs = sys.argv
-    if len(cmdargs) == 1:
+    parser = argparse.ArgumentParser(description='Radiopyo helper functions')
+    parser.add_argument('--update', action='store_true', default=False,help='Update songs')
+    parser.add_argument('--update_all', action='store_true', default=False, help='Update all songs')
+    parser.add_argument('--update_song', default='', help='Name of the song to update')
+
+    args = parser.parse_args()
+
+    print(args)
+
+    if args.update:
+        update_songs(RADIOPYO_PATH)
+    elif args.update_all:
+        update_all_songs(RADIOPYO_PATH)
+    elif args.update_song != '':
+        update_song(args.update_song)
+    else:
         select_song(RADIOPYO_PATH)
-    else:    
-        if cmdargs[1] == 'update':
-            update_songs(RADIOPYO_PATH)
-        elif cmdargs[1] == 'update_song':
-            update_song(cmdargs[2])
-        elif cmdargs[1] == 'update_all':
-            update_all_songs(RADIOPYO_PATH)
 
 if __name__ == '__main__':
     main()

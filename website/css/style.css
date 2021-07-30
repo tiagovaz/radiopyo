@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo&family=Lato&display=swap');
+
+html {
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    min-height: 95vh; 
+}
+
+h1 {
+    font-family: 'Arimo', sans-serif;
+    font-size: 50px;
+    margin: 30px 0 15px 0;
+}
+
+h3 {
+    font-size: 22px;
+    margin: 0 0 30px 0;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.information {
+    padding-top: 30px;
+}
+
+.main-content {
+    background-color: #cac9c99f;
+    width: max(30%, 180px);
+    margin: auto;
+    padding-bottom: 10px;
+    border-radius: 20px;
+}
+
+.control-button {
+    background-color: transparent;
+    border: none;
+    font-size: xx-large;
+    position: fixed;
+
+}
+
+.control-button:hover {
+    color: #009be3;
+}
