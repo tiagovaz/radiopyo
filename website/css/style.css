@@ -33,7 +33,7 @@ h3 {
 
 .main-content {
     background-color: #cac9c99f;
-    width: max(30%, 180px);
+    width: max(30%, 320px);
     margin: auto;
     padding-bottom: 10px;
     border-radius: 20px;
@@ -47,6 +47,15 @@ h3 {
 
 }
 
-.control-button:hover {
+.control-button.left {
+    margin-left: -57px;
+}
+
+.control-button:hover:enabled {
     color: #009be3;
+}
+
+.song-info {
+    padding-left: 10px;
+    padding-right: 10px;
 }
